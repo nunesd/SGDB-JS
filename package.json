@@ -1,0 +1,30 @@
+{
+  "name": "sgdb-js",
+  "version": "0.0.1",
+  "description": "SGasic features with JS",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./bin/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nunesd/SGDB-JS.git"
+  },
+  "author": "Douglas Nunes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nunesd/SGDB-JS/issues"
+  },
+  "homepage": "https://github.com/nunesd/SGDB-JS#readme",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "http-server": "^0.11.1",
+    "jsonfile": "^5.0.0"
+  },
+  "devDependencies": {
+    "body-parser": "^1.19.0",
+    "nodemon": "^1.19.1"
+  }
+}
