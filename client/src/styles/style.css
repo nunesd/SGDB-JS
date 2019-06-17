@@ -1,0 +1,45 @@
+@font-face {
+  font-family: 'Expletus Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Expletus Sans'), local('ExpletusSans'), url(https://fonts.gstatic.com/s/expletussans/v12/RLp5K5v5_bqufTYdnhFzDj2ddf4Yvw.ttf) format('truetype');
+}
+.container {
+  background-color: #f9f9f9;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.container header {
+  border-bottom: 1px solid #ccc;
+}
+.container header h1 {
+  font-family: 'Expletus Sans', cursive;
+  font-size: 36px;
+  padding: 0 15px;
+}
+.container .content {
+  padding: 15px;
+  display: flex;
+}
+.container .content .main .list .header-list,
+.container .content .main .list .row {
+  display: flex;
+  padding: 5px;
+  font-family: 'Segoe UI';
+}
+.container .content .main .list .header-list > *,
+.container .content .main .list .row > * {
+  padding: 0 5px;
+  min-width: 68px;
+}
+.container .content .main .list .header-list.row > *:first-child,
+.container .content .main .list .row.row > *:first-child {
+  display: flex;
+  justify-content: center;
+}
+.container .content .transactions {
+  flex: 1;
+}

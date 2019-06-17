@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Expletus+Sans&display=swap');
+.container {
+	background-color: #f9f9f9;
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	header {
+		border-bottom: 1px solid #ccc;
+		h1 {
+			font-family: 'Expletus Sans', cursive;
+			font-size: 36px;
+			padding: 0 15px;
+		}
+	}
+	.content {
+		padding: 15px;
+		display: flex;
+		.main {
+			.list {
+				.header-list, .row {
+					display: flex;
+					padding: 5px;
+					font-family: 'Segoe UI';
+					& > * {
+						padding: 0 5px;
+						min-width: 68px;
+					}
+					&.row {
+						& > *:first-child {
+							display: flex;
+							justify-content: center
+						}
+					}
+				}
+			}
+		}
+		.transactions {
+			flex: 1;
+		}
+	}
+}
