@@ -1,0 +1,17 @@
+
+.list {
+	.header-list, .row {
+		display: flex;
+		padding: 5px;
+		font-family: 'Segoe UI';
+		& > * {
+			padding: 0 5px;
+			font-size: 15px;
+			min-width: 68px;
+			&:first-child {
+				display: flex;
+				justify-content: center
+			}
+		}
+	}
+}

@@ -5,10 +5,99 @@
   font-display: swap;
   src: local('Expletus Sans'), local('ExpletusSans'), url(https://fonts.gstatic.com/s/expletussans/v12/RLp5K5v5_bqufTYdnhFzDj2ddf4Yvw.ttf) format('truetype');
 }
+.list .header-list,
+.list .row {
+  display: flex;
+  padding: 5px;
+  font-family: 'Segoe UI';
+}
+.list .header-list > *,
+.list .row > * {
+  padding: 0 5px;
+  font-size: 15px;
+  min-width: 68px;
+}
+.list .header-list > *:first-child,
+.list .row > *:first-child {
+  display: flex;
+  justify-content: center;
+}
+.transaction {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  height: fit-content;
+}
+.transaction .title {
+  text-align: center;
+  font-weight: bold;
+  font-family: 'Segoe UI';
+}
+.transaction .transaction-content {
+  display: flex;
+  flex-direction: column;
+}
+.transaction .transaction-content .row {
+  padding: 5px 0;
+}
+.transaction .transaction-content .row .search {
+  display: flex;
+}
+.transaction .transaction-content .row .search label input {
+  width: 57%;
+}
+.transaction .transaction-content .row .search button {
+  padding: 5px 10px;
+  background: #acacac;
+}
+.transaction .transaction-content .row .actions,
+.transaction .transaction-content .row .alter-data,
+.transaction .transaction-content .row .name label,
+.transaction .transaction-content .row .search label {
+  display: flex;
+  justify-content: space-evenly;
+}
+.transaction .transaction-content .row .actions button,
+.transaction .transaction-content .row .alter-data button,
+.transaction .transaction-content .row .name label button,
+.transaction .transaction-content .row .search label button {
+  padding: 5px 10px;
+  background: #acacac;
+}
+.transaction .transaction-content .row .actions.alter-data .post,
+.transaction .transaction-content .row .alter-data.alter-data .post,
+.transaction .transaction-content .row .name label.alter-data .post,
+.transaction .transaction-content .row .search label.alter-data .post {
+  background-color: #34a334;
+}
+.transaction .transaction-content .row .actions.alter-data .put,
+.transaction .transaction-content .row .alter-data.alter-data .put,
+.transaction .transaction-content .row .name label.alter-data .put,
+.transaction .transaction-content .row .search label.alter-data .put {
+  background-color: #ff611a;
+}
+.transaction .transaction-content .row .actions.alter-data .delete,
+.transaction .transaction-content .row .alter-data.alter-data .delete,
+.transaction .transaction-content .row .name label.alter-data .delete,
+.transaction .transaction-content .row .search label.alter-data .delete {
+  background-color: #fa5252;
+}
+body {
+  margin: 0;
+}
+button {
+  border: none;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+}
 .container {
   background-color: #f9f9f9;
   width: 100%;
   height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -23,23 +112,37 @@
 .container .content {
   padding: 15px;
   display: flex;
+  flex: 1;
 }
-.container .content .main .list .header-list,
-.container .content .main .list .row {
+.container .content .main {
+  overflow-y: auto;
+  border-right: 1px solid #ccc;
+  padding: 15px;
+}
+.container .content .main .buttons {
   display: flex;
-  padding: 5px;
-  font-family: 'Segoe UI';
+  flex-direction: column;
 }
-.container .content .main .list .header-list > *,
-.container .content .main .list .row > * {
-  padding: 0 5px;
-  min-width: 68px;
+.container .content .main .buttons > * {
+  min-height: 40px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  font-weight: bold;
+  background: #BD4620;
+  cursor: pointer;
 }
-.container .content .main .list .header-list.row > *:first-child,
-.container .content .main .list .row.row > *:first-child {
-  display: flex;
-  justify-content: center;
+.container .content .main .buttons > *:first-child {
+  margin-top: 20px;
+  background: #34a334;
 }
 .container .content .transactions {
   flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.container .content .transactions > * {
+  flex-basis: 200px;
 }

@@ -1,0 +1,51 @@
+.transaction {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	margin: 10px;
+	border: 1px solid #ccc;
+	height: fit-content;
+	.title {
+		text-align: center;
+		font-weight: bold;
+		font-family: 'Segoe UI';
+	}
+	.transaction-content {
+		display: flex;
+		flex-direction: column;
+		.row {
+			padding: 5px 0;
+			.search {
+				display: flex;
+				label {
+					input {
+						width: 57%;
+					}
+				}
+				button {
+					padding: 5px 10px;
+					background: #acacac;
+				}
+			}
+			.actions, .alter-data, .name label, .search label {
+				display: flex;
+				justify-content: space-evenly;
+				button {
+					padding: 5px 10px;
+					background: #acacac;
+				}
+				&.alter-data {
+					.post {
+						background-color: #34a334;
+					}
+					.put {
+						background-color: #ff611a;
+					}
+					.delete {
+						background-color: rgb(250, 82, 82);
+					}
+				}
+			}
+		}
+	}
+}
