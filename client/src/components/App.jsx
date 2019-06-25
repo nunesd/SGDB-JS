@@ -20,7 +20,8 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		this.setState({ dataList: dataMock })
+		utils.getDB().then(res => res.json()).then(res => this.setState({dataList: res.data}))
+		// this.setState({ dataList: dataMock })
 	}
 
 	handleSetTitle = title => {
@@ -36,39 +37,49 @@ class App extends Component {
 	newTransaction = () => {
 		this.setState(state => ({
 			...state,
-			newTran: [...state.newTran, {title: `T${state.transactionCount + 1}`}],
+			newTran: [...state.newTran, {title: `T${state.transactionCount + 1}`, disabled: false}],
 			transactionCount: state.transactionCount + 1,
 		}))
 	}
 
-	onSearch = (id, title) => {
-		let index = null
+	onSearch = (id, title, index) => {
+		const { newTran, dataList } = this.state
 		
-		this.state.dataList.find((elem, i) => {
-			index = i
+		let i = null
+		
+		dataList.find((elem, key) => {
+			i = key
 			return elem.cod === id
 		})
 
-		this.setState(state => {
-			let dataList = state.dataList.slice();
+		if (dataList[i].status === utils.constants.EXCLUSIVE_LOCK) {
+			alert("Esta linha está bloqueada, aguarde até que ela seja liberada")
+			this.setState( state => {
+				let newTransac = newTran.slice();
+				newTransac[index].disabled = true
+				return { ...state, newTran: newTransac }
+			})
+		} else {
+			this.setState(state => {
+				let dataList = state.dataList.slice();
+	
+				dataList[i].status = utils.constants.SHARED_LOCK
+				
+				return {...state, dataList}
+			})
+		}
 
-			dataList[index].status = utils.constants.SHARED_LOCK
-			
-			return {...state, dataList}
-		})
-		
+		console.log('log search')
 		utils.setLogs(
 			utils.logBody(
 				title, 
 				'SELECT', 
-				utils.querys.select(this.state.dataList[index])
+				utils.querys.select(this.state.dataList[i])
 			)
 		)
 	}
 
 	onChangeData = (action, values, title) => {
-		//saveLog
-		//changeStatus
 		if(action !== 'POST') {
 			this.setState( state => {
 				let dataList = state.dataList.slice();
@@ -110,6 +121,41 @@ class App extends Component {
 		utils.setLogs(body)
 	}
 
+	filterUncommittedChanges = (title) => {
+		
+		const { uncommittedChanges, newTran } = this.state
+		let newUncommittedChanges = []
+		
+		for (var key in uncommittedChanges) {
+			if(key !== title)
+				newUncommittedChanges.push( {[key]: uncommittedChanges[key]})
+		}
+		
+		return newUncommittedChanges
+	}
+
+	onRollback = title => {
+		this.setState({
+			uncommittedChanges: this.filterUncommittedChanges(title)
+		})
+		this.setState(state => {
+			let newTransac = state.newTran.slice().filter(elem => elem.title !== title)
+			return { ...state, newTran: newTransac }
+		})
+	}
+
+
+	onCommit = title => {
+		this.setState({
+			uncommittedChanges: this.filterUncommittedChanges(title)
+		})
+
+		this.setState(state => {
+			let newTransac = state.newTran.slice().filter(elem => elem.title !== title)
+			return { ...state, newTran: newTransac }
+		})
+	}
+
 	render() {
 		const { dataList, newTran } = this.state;
 		return (
@@ -136,6 +182,8 @@ class App extends Component {
 										index={index} 
 										onChangeData={this.onChangeData} 
 										onSearch={this.onSearch}
+										onRollback={this.onRollback}
+										onCommit={this.onCommit}
 									/>
 								)
 							})

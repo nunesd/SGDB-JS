@@ -32,5 +32,22 @@ export const utils = {
 			}
 		)
 	},
+	getDB: () => {
+		return fetch(`${utils.URL}/logs`, 
+			{
+				method: 'GET',
+				headers: utils.headers
+			}
+		)
+	},
+	updateDB: body => {
+		fetch(`${utils.URL}/db`, 
+			{
+				method: 'POST', 
+				body: JSON.stringify(body),
+				headers: utils.headers
+			}
+		)
+	},
 	logBody: (sessao, tipo, acao) => ({sessao, tipo, acao})
 }

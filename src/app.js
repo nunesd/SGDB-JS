@@ -44,8 +44,8 @@ const writeDocument = body => {
 	.catch(error => console.error(error))
 }
 
-const teste = router.post('/', (req, res, next) => {
-	const file = `${__dirname}/log.json`
+const logs = router.post('/', (req, res, next) => {
+	const file = `${__dirname}/files/log.json`
 	jsonfile.readFile(file)
 		.then(obj => {
 			obj.logs.push(req.body)
@@ -56,7 +56,27 @@ const teste = router.post('/', (req, res, next) => {
 		res.status(200).send({success: true})
 })
 
+const getDB = router.get('/', (req, res, next) => {
+	const file = `${__dirname}/files/DB.json`
+	jsonfile.readFile(file)
+		.then(obj => {
+			res.status(200).send(obj)
+		})
+		.catch(error => console.error(error))
+})
+
+const updateDB = router.put('/', (req, res, next) => {
+	// const file = `${__dirname}/files/DB.json`
+	// jsonfile.readFile(file)
+	// 	.then(obj => {
+			res.status(200).send('atualizado')
+	// 	})
+	// 	.catch(error => console.error(error))
+})
+
 app.use('/', index)
-app.use('/logs', teste)
+app.use('/logs', logs)
+app.use('/db', getDB)
+app.use('/db', updateDB)
 
 module.exports = app
