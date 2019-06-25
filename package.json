@@ -25,7 +25,8 @@
     "express": "^4.17.1",
     "http": "0.0.0",
     "http-server": "^0.11.1",
-    "jsonfile": "^5.0.0"
+    "jsonfile": "^5.0.0",
+    "write-json-file": "^4.1.0"
   },
   "devDependencies": {
     "body-parser": "^1.19.0",

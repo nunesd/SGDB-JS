@@ -16,12 +16,16 @@ class App extends Component {
 		dataList: [],
 		newTran: [],
 		transactionCount: 0,
-		uncommittedChanges: {}
+		uncommittedChanges: {},
+		hasUncommited : null
 	}
 
 	componentDidMount() {
 		utils.getDB().then(res => res.json()).then(res => this.setState({dataList: res.data}))
 		// this.setState({ dataList: dataMock })
+		this.setState({
+			hasUncommited: sessionStorage.uncommittedChanges
+		})
 	}
 
 	handleSetTitle = title => {
@@ -79,6 +83,10 @@ class App extends Component {
 		)
 	}
 
+	saveOnLocalStorage = (data) => {
+		sessionStorage.uncommittedChanges = JSON.stringify(data);
+	}
+
 	onChangeData = (action, values, title) => {
 		if(action !== 'POST') {
 			this.setState( state => {
@@ -104,6 +112,9 @@ class App extends Component {
 					[title]: newData
 				}
 			}
+		}, () => {
+			this.saveOnLocalStorage(this.state.uncommittedChanges)
+			console.log(this.state.uncommittedChanges)
 		})
 		
 		let body = utils.logBody(
@@ -130,6 +141,8 @@ class App extends Component {
 			if(key !== title)
 				newUncommittedChanges.push( {[key]: uncommittedChanges[key]})
 		}
+
+		this.saveOnLocalStorage(newUncommittedChanges)
 		
 		return newUncommittedChanges
 	}
@@ -142,6 +155,8 @@ class App extends Component {
 			let newTransac = state.newTran.slice().filter(elem => elem.title !== title)
 			return { ...state, newTran: newTransac }
 		})
+		
+		utils.setLogs({action: 'ROLLBACK', session: title})
 	}
 
 
@@ -169,8 +184,45 @@ class App extends Component {
 		utils.updateDB({data: newUncommittedChanges[title]})
 	}
 
+	handleUndo = () => {
+		this.saveOnLocalStorage(null)
+		this.setState({hasUncommited: null})
+		let parse = JSON.parse(this.state.hasUncommited)
+		for(let key in parse) {
+			utils.setLogs({action: 'ROLLBACK', session: key})
+		}		
+	}
+
+	handleRedo = () => {
+		this.saveOnLocalStorage(null)
+		
+		let parse = JSON.parse(this.state.hasUncommited)
+		let keys = []
+		let arr = []
+		for(let key in parse) {
+			keys.push(parse[key])
+		}
+		keys.forEach(elem => {
+			arr.push(elem)
+		});
+		
+		this.setState({hasUncommited: null})
+		utils.updateDB({data: arr})
+	}
+
 	render() {
-		const { dataList, newTran } = this.state;
+		const { dataList, newTran, hasUncommited } = this.state;
+		if(hasUncommited && hasUncommited.length && hasUncommited !== "null") {
+			return (
+				<div style={{width: '500px', height: '500px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItens: 'center'}}>
+					<div className="title" style={{display: 'flex', justifyContent: 'center'}}> Existem itens não commitados, o que fazer com eles? </div>
+					<div className="buttuns" style={{display: 'flex', justifyContent: 'space-evenly'}}>
+						<button onClick={this.handleRedo}>Redo</button>
+						<button onClick={this.handleUndo}>Undo</button>
+					</div>
+				</div>
+			)
+		}
 		return (
 			<div className="container">
 				<header>

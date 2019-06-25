@@ -3,6 +3,11 @@ const bodyParser = require('body-parser')
 const index = require('./routes/index')
 const fs = require("fs")
 const jsonfile = require('jsonfile')
+const writeJsonFile = require('write-json-file');
+ 
+(async () => {
+    await writeJsonFile('foo.json', {foo: true});
+})();
 
 var cors = require('cors')
 
@@ -57,6 +62,11 @@ const writeDocument = (file,body) => {
 	jsonfile.writeFile(file, body)
 	.then(() => {})
 	.catch(error => console.error(error))
+}
+
+async function teste(body) {
+	const file = `${__dirname}/files/DB.json`
+    await writeJsonFile(file, body);
 }
 
 const readDocument = (file) => {
