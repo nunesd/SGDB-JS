@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import List from './List'
-import {utils} from './utils'
+import { utils } from './utils'
 
 const Transaction = props => {
 	const [activeValue, setValue] = useState("");
@@ -11,7 +11,7 @@ const Transaction = props => {
 		<div className="transaction">
 			<div className="title">{props.elem.title}</div>
 			<div className="transaction-content">
-				<List {...props} />
+				<List {...props} status={false} />
 				<div className="row">
 					<div className="search">
 						<label>
@@ -23,24 +23,35 @@ const Transaction = props => {
 								onChange={e => setSearchValue(e.target.value ? parseInt(e.target.value) : e.target.value)} 
 							/>
 						</label>
-						<button onClick={() => setValue(utils.findElemWithIndex(props.dataList, 'cod', searchValue))}>Buscar</button>
+						<button onClick={() => {
+							setValue(utils.findElemWithIndex(props.dataList, 'cod', searchValue))
+							props.onSearch(searchValue, props.elem.title)
+						}}>
+								Buscar
+						</button>
 					</div>
 				</div>
 				<div className="row">
 					<div className="name">
 						<label>
 							Nome:
-							<input type="text" value={activeValue && activeValue.data.name} 
-							onChange={
-								e => setValue({...activeValue, data: {...activeValue.data, nome: e.target.value }})
-							} />
+							<input 
+								type="text" 
+								value={activeValue && activeValue.data.name} 
+								onChange={
+									event => {
+										setValue({...activeValue, data: {...activeValue.data, name: event.target.value }})
+										console.log(event.target.value)
+									}
+								} 
+							/>
 						</label>
 					</div>
 				</div>
 				<div className="row">
 					<div className="alter-data">
 						<button className="post" onClick={() => props.onChangeData('POST', activeValue, props.elem.title)}>Incluir</button>
-						<button className="put" onClick={() => props.onChangeData('PUT', activeValue, props.elem.title)}>Alterar</button>
+						<button className="update" onClick={() => props.onChangeData('UPDATE', activeValue, props.elem.title)}>Alterar</button>
 						<button className="delete" onClick={() => props.onChangeData('DELETE', activeValue, props.elem.title)}>Excluir</button>
 					</div>
 				</div>
@@ -63,6 +74,7 @@ Transaction.propTypes = {
 	elem: PropTypes.object,
 	index: PropTypes.number,
 	onChangeData: PropTypes.func,
+	onSearch: PropTypes.func,
 }
 
 export default Transaction

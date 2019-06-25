@@ -7,13 +7,13 @@ const router = express.Router()
 const get = router.get('/', (req, res, next) => {
 	//TODO: DESCOBRIR COMO PEGAR CAMINHO DO ARQUIVO EM OUTRA PASTA JSON
 	jsonfile.readFile(file)
-	.then(obj => (
+	.then(obj => {
 		res.status(200).send({
 			title: 'node store API',
 			data: obj,
 			version: '0.0.1'
 		})
-	))
+	})
   .catch(error => console.error(error))
 })
 
