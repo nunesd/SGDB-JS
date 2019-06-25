@@ -43,7 +43,7 @@ export const utils = {
 	updateDB: body => {
 		fetch(`${utils.URL}/db`, 
 			{
-				method: 'POST', 
+				method: 'PUT', 
 				body: JSON.stringify(body),
 				headers: utils.headers
 			}

@@ -146,6 +146,17 @@ class App extends Component {
 
 
 	onCommit = title => {
+		const { uncommittedChanges } = this.state
+
+		let newUncommittedChanges = null
+
+		for (var key in uncommittedChanges) {
+			if(key === title)
+				newUncommittedChanges = {[key]: uncommittedChanges[key]}
+		}
+
+		console.log(newUncommittedChanges[title], 'newUncommittedChanges')
+
 		this.setState({
 			uncommittedChanges: this.filterUncommittedChanges(title)
 		})
@@ -154,6 +165,8 @@ class App extends Component {
 			let newTransac = state.newTran.slice().filter(elem => elem.title !== title)
 			return { ...state, newTran: newTransac }
 		})
+
+		utils.updateDB({data: newUncommittedChanges[title]})
 	}
 
 	render() {
